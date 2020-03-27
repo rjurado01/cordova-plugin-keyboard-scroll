@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-keyboard-scroll",
+  "version": "0.0.1",
+  "description": "Fix iOS scroll bug when keyboard is showed.",
+  "cordova": {
+    "id": "cordova-plugin-keyboard-scroll",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "keyboard",
+    "ios"
+  ],
+  "engines": {
+    "cordova": ">=3.4.0"
+  }
+}

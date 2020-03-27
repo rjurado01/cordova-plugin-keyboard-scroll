@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<plugin id="cordova-plugin-keyboard-scroll"
+  version="0.0.1"
+  xmlns="http://apache.org/cordova/ns/plugins/1.0">
+
+  <name>KeyboardScroll</name>
+
+  <js-module name="keyboard-scroll" src="www/keyboard-scroll.js">
+    <clobbers target="window.KS"/>
+  </js-module>
+
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="KeyboardScroll">
+        <param name="ios-package" value="KeyboardScroll" />
+      </feature>
+    </config-file>
+
+    <!-- Add in the plugin .swift files here -->
+    <source-file src="src/ios/KeyboardScroll.swift" />
+
+    <!-- Add in the swift-support plugin by default -->
+    <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
+  </platform>
+</plugin>
