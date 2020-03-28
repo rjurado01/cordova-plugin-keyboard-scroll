@@ -1,6 +1,8 @@
 # cordova-plugin-keyboard-scroll
 
-This plugin fixes the keyboard overlaps text input.
+This plugin fixes the keyboard overlaps text input on iOS.
+
+![example](images/keyboardoverlap.png)
 
 # Installation
 
