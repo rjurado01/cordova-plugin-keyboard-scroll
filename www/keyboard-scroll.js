@@ -20,7 +20,7 @@ Keyboard.init = () => {
     document.body.style.height = screenSize + 'px';
     Keyboard.isVisible = true;
 
-    if (document.activeElement.getBoundingClientRect().top > screenSize) {
+    if (document.activeElement.getBoundingClientRect().bottom > screenSize) {
       document.activeElement.scrollIntoView({block: 'center', behavior: "smooth"});
     }
   };
