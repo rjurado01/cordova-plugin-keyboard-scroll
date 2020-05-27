@@ -15,9 +15,18 @@ Keyboard.init = () => {
 
     const time = new Date().getTime() - Keyboard.lastHide;
     const screenSize = document.body.offsetHeight - keyboardHeight;
+    
+    // get closest element size
+    let element_size = 0;
+    if (elementID) {
+        const element = document.activeElement.closest(elementID);
+        if (element) {
+            element_size = element.lastChild.offsetHeight;
+        }
+    }
 
     // resize body to total size less keyboard (allow scroll)
-    document.body.style.height = screenSize + 'px';
+    document.body.style.height = screenSize + element_size + 'px';
     Keyboard.isVisible = true;
 
     if (document.activeElement.getBoundingClientRect().bottom > screenSize) {

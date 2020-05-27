@@ -4,9 +4,14 @@
 @objc(KeyboardScroll) class KeyboardScroll : CDVPlugin, UIScrollViewDelegate {
     var willShowCallbackId: String?
     var willHideCallbackId: String?
+    var elementId: String?
 
     @objc override func pluginInitialize() {
-      self.webView.scrollView.delegate = self;
+        self.webView.scrollView.delegate = self;
+        self.elementId = self.commandDelegate!.settings["keyboardscrollelementid"] as? String
+        if self.elementId == nil {
+          self.elementId = "ion-tabs"
+        }
     }
 
     @objc(onKeyboardWillShow:)
@@ -46,7 +51,7 @@
 
             // Set the plugin result to succeed.
             let pluginResult = CDVPluginResult(
-                status: CDVCommandStatus_OK, messageAs: keyboardHeight.description);
+                status: CDVCommandStatus_OK, messageAs: [keyboardHeight.description, self.elementId as Any]);
 
             pluginResult?.setKeepCallbackAs(true);
 
