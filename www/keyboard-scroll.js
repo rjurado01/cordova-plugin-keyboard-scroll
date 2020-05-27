@@ -6,7 +6,11 @@ var Keyboard = {
 };
 
 Keyboard.init = () => {
-  const onKeyboardWillShow = keyboardHeight => {
+  const onKeyboardWillShow = opts => {
+    // get variables
+    const keyboardHeight = opts[0];
+    const elementID = opts[1]
+
     // avoid run when keyboard is opened and click other input (event WillShow is fired)
     if (Keyboard.isVisible || Keyboard.hideTimeout) {
       clearTimeout(Keyboard.hideTimeout);
