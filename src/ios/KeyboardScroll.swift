@@ -4,9 +4,21 @@
 @objc(KeyboardScroll) class KeyboardScroll : CDVPlugin, UIScrollViewDelegate {
     var willShowCallbackId: String?
     var willHideCallbackId: String?
+    var elementId: String?
+    var keyboardResizeAfterShow: Bool?
 
     @objc override func pluginInitialize() {
-      self.webView.scrollView.delegate = self;
+        self.webView.scrollView.delegate = self;
+        self.elementId = self.commandDelegate!.settings["keyboardscrollelementid"] as? String
+        self.keyboardResizeAfterShow = self.commandDelegate!.settings["keyboardresizeaftershow"] as? String == "true" as String ? true : false
+
+        // default values
+        if self.elementId == nil {
+          self.elementId = "ion-tabs"
+        }
+        if self.keyboardResizeAfterShow == nil {
+          self.keyboardResizeAfterShow = false
+        }
     }
 
     @objc(onKeyboardWillShow:)
@@ -16,7 +28,7 @@
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
+            name: self.keyboardResizeAfterShow ?? false ? NSNotification.Name.UIKeyboardDidShow : NSNotification.Name.UIKeyboardWillShow,
             object: nil
         )
     }
@@ -28,25 +40,25 @@
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
+            name: NSNotification.Name.UIKeyboardWillHide,
             object: nil
         )
     }
 
     // Avoid scroll statusbar top when keyboard appears
-    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollView.contentOffset = CGPoint.zero
     }
 
     // Notify keyboard will show and send keyboard height
     @objc func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
 
             // Set the plugin result to succeed.
             let pluginResult = CDVPluginResult(
-                status: CDVCommandStatus_OK, messageAs: keyboardHeight.description);
+                status: CDVCommandStatus_OK, messageAs: [keyboardHeight.description, self.elementId as Any]);
 
             pluginResult?.setKeepCallbackAs(true);
 
