@@ -5,12 +5,19 @@
     var willShowCallbackId: String?
     var willHideCallbackId: String?
     var elementId: String?
+    var keyboardResizeAfterShow: Bool?
 
     @objc override func pluginInitialize() {
         self.webView.scrollView.delegate = self;
         self.elementId = self.commandDelegate!.settings["keyboardscrollelementid"] as? String
+        self.keyboardResizeAfterShow = self.commandDelegate!.settings["keyboardresizeaftershow"] as? String == "true" as String ? true : false
+
+        // default values
         if self.elementId == nil {
           self.elementId = "ion-tabs"
+        }
+        if self.keyboardResizeAfterShow == nil {
+          self.keyboardResizeAfterShow = false
         }
     }
 
@@ -21,7 +28,7 @@
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
-            name: NSNotification.Name.UIKeyboardWillShow,
+            name: self.keyboardResizeAfterShow ?? false ? NSNotification.Name.UIKeyboardDidShow : NSNotification.Name.UIKeyboardWillShow,
             object: nil
         )
     }
